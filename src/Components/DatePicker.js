@@ -17,16 +17,27 @@ class DatePicker extends Component {
     }
   }
 
+  handleDateChange = (date) => {
+    this.setState({date})
+    this.props.updateDate(date)
+  }
+
+  resetDate(){
+    // Resets date on form submission from parent
+    this.setState({date: null})
+  }
+
   render() {
     const { date, focused } = this.state;
     return (
       <div>
         <SingleDatePicker
-          date={this.state.date} // momentPropTypes.momentObj or null
-          onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
-          focused={this.state.focused} // PropTypes.bool
-          onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
-          id="some_id" // PropTypes.string.isRequired,
+          date={this.state.date}
+          focused={this.state.focused}
+          onDateChange={(date) => this.handleDateChange(date)}
+          onFocusChange={({ focused }) => this.setState({ focused })}
+          id="some_id"
+          showClearDate={true}
           block={true}
         />
       </div>
