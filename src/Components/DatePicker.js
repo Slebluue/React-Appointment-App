@@ -37,10 +37,14 @@ class DatePicker extends Component {
 
   render() {
     const { date, focused } = this.state;
+    let startDate = date
+    if( this.props.initDate ){
+      startDate = this.props.initDate
+    }
     return (
       <div>
         <SingleDatePicker
-          date={this.state.date}
+          date={startDate}
           focused={this.state.focused}
           onDateChange={(date) => this.handleDateChange(date)}
           onFocusChange={({ focused }) => this.setState({ focused })}

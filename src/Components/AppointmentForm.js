@@ -14,7 +14,8 @@ class AppointmentForm extends Component {
     this.state = {
       apptName: '',
       apptDesc: '',
-      date: null
+      date: null,
+      id: 1,
     }
     this.child = React.createRef();
   }
@@ -25,9 +26,15 @@ class AppointmentForm extends Component {
     this.child.current.resetDate();
     // Doing this reset on form for bug where autofilled background would hang around after submititng form
     document.getElementById("app-form").reset();
+    
+    // This is a bandaid solution for being able to set an ID and edit an appointment
+    // But I figured for just a react app it is fine. I would be using an actual database for this
+    // in a live app
+    let state = this.state
+    state.id = Math.random().toString(36).substr(2, 9)
 
     // Send state data to parent to create appointment
-    this.props.createAppointment(this.state)
+    this.props.createAppointment(state)
   }
 
   handleDateChange = (date) => {

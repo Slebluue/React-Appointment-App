@@ -1,8 +1,17 @@
 // Dependencies
 // -----------------------------------------------
-import React from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import isSame from 'react-dates/lib/utils/isSameDay';
+
+// Components
+// -----------------------------------------------
+import AppointmentListItem from '../Components/AppointmentListItem';
+import StyledHeader from './StyledHeader';
+import { FormGroup, FormControl, Button, ControlLabel } from 'react-bootstrap';
+import DatePicker from '../Components/DatePicker'
+import FormContainer from './FormContainer';
 
 const PopupContainer = styled.div`
   position: absolute;
@@ -24,24 +33,99 @@ const PopupContainer = styled.div`
     top: 50%;
     transform: translateY(-50%);
     max-width: 500px;
-    height: 200px;
     width: 94%;
+    padding: 20px;
+    border: 2px solid #00a699;
+    border-radius: 4px;
+    box-shadow: 0px 0px 11px 5px rgba(0,0,0, 0.3);
+
+    .delete{
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 14px;
+      color: red;
+
+      &:hover{
+        cursor: pointer;
+      }
+    }
   }
 `
 
 
-const Popup = (props) => {
-  const appointment = props.appointment
-  console.log(props)
-  return (
-    <PopupContainer>
-      <div className="overlay"></div>
-      <div className="appointment-content">
-        <p>{moment(appointment.date).format('MM/DD/YYYY')}</p>
-        <p>{appointment.apptName}</p>
-        <p>{appointment.apptDesc}</p>
-      </div>
-    </PopupContainer>
-  )
+class Popup extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      apptName: this.props.appointment.apptName,
+      apptDesc: this.props.appointment.apptDesc,
+      oldDate: this.props.appointment.date,
+      date: this.props.appointment.date,
+      id: this.props.appointment.id
+    }
+  }
+
+  deleteAppointment(){
+    this.props.deleteAppointment(this.state);
+    this.props.handlePopUp();
+  }
+
+  handleFormChange = (e) => {
+    this.setState({[e.target.name]: e.target.value})
+  }
+  handleDateChange = (date) => {
+    this.setState({date: date})
+  }
+  onSubmit = (e) => {
+    e.preventDefault();
+    let dateCheck = this.state.oldDate.isSame(this.state.date)
+    this.props.updateAppointment(this.state, dateCheck);
+    this.props.handlePopUp();
+  }
+
+  render(){
+    const { isBlocked } = this.props
+    const { date } = this.state
+    return (
+      <PopupContainer>
+        <div className="overlay" onClick={this.props.handlePopUp}></div>
+        <div className="appointment-content">
+          <FormContainer onSubmit={this.onSubmit} id="app-form">
+            <StyledHeader>Review your appointment</StyledHeader>
+            <FormGroup>
+              <ControlLabel>Date</ControlLabel>
+              <DatePicker updateDate={this.handleDateChange} ref={this.child} isBlocked={isBlocked} initDate={date}/>
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Name</ControlLabel>
+              <FormControl 
+                type="text"
+                name="apptName"
+                placeholder="Appointment name ..."
+                bsSize="large"
+                value={this.state.apptName}
+                onChange={this.handleFormChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Description</ControlLabel>
+              <FormControl 
+                type="text"
+                name="apptDesc"
+                placeholder="Appointment description ..."
+                bsSize="large"
+                value={this.state.apptDesc}
+                onChange={this.handleFormChange}
+              />
+            </FormGroup>
+            <Button type="submit">Save Appointment</Button>
+            <span className="delete" onClick={() => this.deleteAppointment(this.props.appointment.id)}>Delete</span>
+          </FormContainer>
+        </div>
+      </PopupContainer>
+    )
+  }
+  
 }
 export default Popup

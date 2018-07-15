@@ -13,19 +13,25 @@ const ScrollContainer = styled.div`
   overflow: scroll;
 `
 
-const ListView = (props) => {
-  return(
-    <ScrollContainer>
-     { props.appointments.map( (appointment, index ) => {
-        return(
-          <div key={index}>
-            <AppointmentListItem appointment={appointment} />
-          </div>
-        )
-      })}
-    </ScrollContainer>
-  );
-  
+class ListView extends Component {
+  handleClick = (date) => {
+    this.props.handlePopUp();
+    this.props.getAppointmentInfo(date);
+  }
+  render(){
+    return(
+      <ScrollContainer>
+       { this.props.appointments.map( (appointment, index ) => {
+          return(
+            <div key={index} onClick={() => this.handleClick(appointment.date)}>
+              <AppointmentListItem 
+                appointment={appointment}  />
+            </div>
+          )
+        })}
+      </ScrollContainer>
+    );
+  }  
 }
 
 export default ListView;
