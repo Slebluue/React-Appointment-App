@@ -1,6 +1,7 @@
 // Dependencies
 // -----------------------------------------------
 import React, { Component } from 'react';
+import isSame from 'react-dates/lib/utils/isSameDay';
 
 //  Components
 // -----------------------------------------------
@@ -8,7 +9,8 @@ import { Grid, Col, Row } from 'react-bootstrap';
 import AppointmentForm from './AppointmentForm';
 import AppointmentInfo from './AppointmentInfo';
 import CalendarView from './CalendarView';
-import StyledHeader from '../Elements/StyledHeader'
+import StyledHeader from '../Elements/StyledHeader';
+import Popup from '../Elements/Popup';
 import Tabs from './Tabs';
 import ListView from './ListView';
 
@@ -18,9 +20,12 @@ class Main extends Component {
     this.state = {
       isViewingAppointment: false,
       appointments: [],
-      isBlocked: [],
+      datesOnly: [],
       calendarToggle: true,
+      singleAppointment: {},
+      popup: false
     }
+    this.child = React.createRef();
   }
 
   createAppointment = (data) => {
@@ -35,8 +40,13 @@ class Main extends Component {
       }
     );
     blockedList.then( list => {
-      this.setState({appointments: newList, isBlocked: list})
+      this.setState({appointments: newList, datesOnly: list})
+      this.reloadCalendar();
     })
+  }
+
+  reloadCalendar = () => {
+    this.child.current.reloadCalendar();
   }
 
   calendarToggle = (activeTab) => {
@@ -47,25 +57,38 @@ class Main extends Component {
     }
   }
 
+  getAppointmentInfo = (date) => {
+    const appointment = this.state.appointments.filter( appointmentDay => {
+      return date.isSame(appointmentDay.date)
+    })
+    if(appointment.length > 0){
+      this.setState({popup: true, singleAppointment: appointment[0]})
+    }
+  }
+
+  handlePopUp(){
+    this.setState({popup: !this.state.popup})
+  }
+
   render() {
-    const {calendarToggle, appointments, isBlocked} = this.state
+    const {calendarToggle, appointments, datesOnly, date, popup, singleAppointment} = this.state
     return (
         <Grid>
           <Row>
             <Col sm={8}>
               <StyledHeader>Create an Appointment</StyledHeader>
-              <AppointmentForm createAppointment={this.createAppointment} isBlocked={isBlocked}/>
-              { this.isViewingAppointment && <AppointmentInfo /> }
+              <AppointmentForm createAppointment={this.createAppointment} isBlocked={datesOnly} />
             </Col>
             <Col sm={4}>
               <Tabs calendarToggle={this.calendarToggle}/>
               { calendarToggle ? (
-                <CalendarView createAppointment={this.createAppointment}/>
+                <CalendarView createAppointment={this.createAppointment} isHighlighted={datesOnly} ref={this.child} getAppointmentInfo={this.getAppointmentInfo}/>
               ) : (
-                <ListView appointments={appointments}/>
+                <ListView appointments={appointments} />
               )}
             </Col>
           </Row>
+          {popup && <Popup appointment={singleAppointment} handlePopUp={this.handlePopUp}/>}
         </Grid>
     );
   }

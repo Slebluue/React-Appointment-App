@@ -23,13 +23,8 @@
 .DateInput .DateInput_input{
   font-size: 14px;
 }
-.CalendarDay__blocked_calendar, .CalendarDay__blocked_calendar:active, .CalendarDay__blocked_calendar:hover{
-  background: #cc0000;
+.CalendarMonth_table .CalendarDay__blocked_calendar, .CalendarMonth_table .CalendarDay__blocked_calendar:active, .CalendarMonth_table .CalendarDay__blocked_calendar:hover{
+  background: #ffe8bc;
   border: 1px solid #cacccd;
-  color: #FFFFFF;
-  opacity: 0.8;
-}
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  color: #484848;
 }

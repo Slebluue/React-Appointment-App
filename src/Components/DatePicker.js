@@ -10,8 +10,8 @@ import { Grid } from 'react-bootstrap';
 import { SingleDatePicker } from 'react-dates';
 
 class DatePicker extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       date: null,
       focused: false,

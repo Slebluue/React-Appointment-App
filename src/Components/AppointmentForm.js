@@ -39,11 +39,11 @@ class AppointmentForm extends Component {
   }
 
   render() {
-    const {isBlocked} = this.props
+    const {isBlocked, dateFromCalendar} = this.props
     return (
       <FormContainer onSubmit={this.onSubmit} id="app-form">
         <FormGroup>
-          <DatePicker updateDate={this.handleDateChange} ref={this.child} isBlocked={isBlocked}/>
+          <DatePicker updateDate={this.handleDateChange} ref={this.child} isBlocked={isBlocked} />
         </FormGroup>
         <FormGroup>
           <FormControl 
