@@ -29,9 +29,7 @@ class AppointmentInfo extends Component {
             bsSize="large"
           />
         </FormGroup>
-        
-      </form>
-            
+      </form>    
     );
   }
 }

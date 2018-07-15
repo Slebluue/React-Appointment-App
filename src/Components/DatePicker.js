@@ -2,6 +2,7 @@
 // -----------------------------------------------
 import React, { Component } from 'react';
 import moment from 'moment'
+import isSame from 'react-dates/lib/utils/isSameDay';
 
 //  Components
 // -----------------------------------------------
@@ -27,6 +28,13 @@ class DatePicker extends Component {
     this.setState({date: null})
   }
 
+  isDayBlocked = (day) => {
+    // Honestly not sure how this scales. Would definitely be open to suggetions here
+    return Boolean(this.props.isBlocked.filter( date => {
+      return date.isSame(day)
+    }).length)
+  }
+
   render() {
     const { date, focused } = this.state;
     return (
@@ -36,6 +44,7 @@ class DatePicker extends Component {
           focused={this.state.focused}
           onDateChange={(date) => this.handleDateChange(date)}
           onFocusChange={({ focused }) => this.setState({ focused })}
+          isDayBlocked={this.isDayBlocked}
           id="some_id"
           showClearDate={true}
           block={true}

@@ -16,7 +16,8 @@ class Tabs extends Component {
   }
 
   handleActiveTab(tab) {
-    this.setState({activeTab: tab})
+    this.setState({activeTab: tab});
+    this.props.calendarToggle(tab);
   }
 
   render() {

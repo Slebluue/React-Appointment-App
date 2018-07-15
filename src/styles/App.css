@@ -13,6 +13,22 @@
   font-size: large;
 }
 
+/*- Calendar styles - */
+.DayPicker_transitionContainer__verticalScrollable{
+  min-height: 500px;
+}
+.DayPicker_transitionContainer__verticalScrollable .CalendarMonthGrid__vertical_scrollable{
+  margin-bottom: 16px;
+}
+.DateInput .DateInput_input{
+  font-size: 14px;
+}
+.CalendarDay__blocked_calendar, .CalendarDay__blocked_calendar:active, .CalendarDay__blocked_calendar:hover{
+  background: #cc0000;
+  border: 1px solid #cacccd;
+  color: #FFFFFF;
+  opacity: 0.8;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

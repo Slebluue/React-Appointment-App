@@ -25,6 +25,9 @@ class AppointmentForm extends Component {
     this.child.current.resetDate();
     // Doing this reset on form for bug where autofilled background would hang around after submititng form
     document.getElementById("app-form").reset();
+
+    // Send state data to parent to create appointment
+    this.props.createAppointment(this.state)
   }
 
   handleDateChange = (date) => {
@@ -36,10 +39,11 @@ class AppointmentForm extends Component {
   }
 
   render() {
+    const {isBlocked} = this.props
     return (
       <FormContainer onSubmit={this.onSubmit} id="app-form">
         <FormGroup>
-          <DatePicker updateDate={this.handleDateChange} ref={this.child} />
+          <DatePicker updateDate={this.handleDateChange} ref={this.child} isBlocked={isBlocked}/>
         </FormGroup>
         <FormGroup>
           <FormControl 
