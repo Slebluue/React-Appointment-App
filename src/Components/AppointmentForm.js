@@ -25,7 +25,7 @@ class AppointmentForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const errors = Validation.dateForm(this.state)
+    const errors = Validation.dateForm(this.state, this.props.isBlocked)
     if ( errors ) {
       this.setState({formErrors: errors});
       return;

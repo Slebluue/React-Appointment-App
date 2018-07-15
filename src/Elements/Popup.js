@@ -117,7 +117,7 @@ class Popup extends Component {
               <FormControl 
                 type="text"
                 name="apptName"
-                placeholder="Appointment name ..."
+                placeholder="Appointment name..."
                 bsSize="large"
                 value={this.state.apptName}
                 onChange={this.handleFormChange}
@@ -131,7 +131,7 @@ class Popup extends Component {
               <FormControl 
                 type="text"
                 name="apptDesc"
-                placeholder="Appointment description ..."
+                placeholder="Appointment description..."
                 bsSize="large"
                 value={this.state.apptDesc}
                 onChange={this.handleFormChange}

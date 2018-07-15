@@ -131,6 +131,7 @@ class Main extends Component {
               ) : (
                 <ListView 
                   appointments={appointments} 
+                  isblocked={datesOnly} 
                   handlePopUp={this.handlePopUp}
                   getAppointmentInfo={this.getAppointmentInfo} />
               )}
