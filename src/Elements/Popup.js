@@ -7,11 +7,11 @@ import isSame from 'react-dates/lib/utils/isSameDay';
 
 // Components
 // -----------------------------------------------
-import AppointmentListItem from '../Components/AppointmentListItem';
 import StyledHeader from './StyledHeader';
 import { FormGroup, FormControl, Button, ControlLabel } from 'react-bootstrap';
 import DatePicker from '../Components/DatePicker'
 import FormContainer from './FormContainer';
+import Validation from '../Components/Validation';
 
 const PopupContainer = styled.div`
   position: absolute;
@@ -62,7 +62,8 @@ class Popup extends Component {
       apptDesc: this.props.appointment.apptDesc,
       oldDate: this.props.appointment.date,
       date: this.props.appointment.date,
-      id: this.props.appointment.id
+      id: this.props.appointment.id,
+      formErrors: null
     }
   }
 
@@ -79,6 +80,13 @@ class Popup extends Component {
   }
   onSubmit = (e) => {
     e.preventDefault();
+
+    const errors = Validation.dateForm(this.state);
+    if ( errors ) {
+      this.setState({formErrors: errors});
+      return;
+    }
+
     let dateCheck = this.state.oldDate.isSame(this.state.date)
     this.props.updateAppointment(this.state, dateCheck);
     this.props.handlePopUp();
@@ -95,7 +103,14 @@ class Popup extends Component {
             <StyledHeader>Review your appointment</StyledHeader>
             <FormGroup>
               <ControlLabel>Date</ControlLabel>
-              <DatePicker updateDate={this.handleDateChange} ref={this.child} isBlocked={isBlocked} initDate={date}/>
+              <DatePicker 
+                updateDate={this.handleDateChange} 
+                ref={this.child} 
+                isBlocked={isBlocked} 
+                initDate={date} />
+                { this.state.formErrors && this.state.formErrors.date && 
+                  <span className="error">{ this.state.formErrors.date }</span>
+                }
             </FormGroup>
             <FormGroup>
               <ControlLabel>Name</ControlLabel>
@@ -107,6 +122,9 @@ class Popup extends Component {
                 value={this.state.apptName}
                 onChange={this.handleFormChange}
               />
+              { this.state.formErrors && this.state.formErrors.name && 
+                <span className="error">{ this.state.formErrors.name }</span>
+              }
             </FormGroup>
             <FormGroup>
               <ControlLabel>Description</ControlLabel>
@@ -119,8 +137,12 @@ class Popup extends Component {
                 onChange={this.handleFormChange}
               />
             </FormGroup>
-            <Button type="submit">Save Appointment</Button>
-            <span className="delete" onClick={() => this.deleteAppointment(this.props.appointment.id)}>Delete</span>
+            <Button type="submit">Update</Button>
+            <span 
+              className="delete" 
+              onClick={() => this.deleteAppointment(this.props.appointment.id)} >
+              Delete
+            </span>
           </FormContainer>
         </div>
       </PopupContainer>

@@ -8,7 +8,6 @@ import styled from 'styled-components';
 // -----------------------------------------------
 import { Grid, Col, Row } from 'react-bootstrap';
 import AppointmentForm from './AppointmentForm';
-import AppointmentInfo from './AppointmentInfo';
 import CalendarView from './CalendarView';
 import StyledHeader from '../Elements/StyledHeader';
 import Popup from '../Elements/Popup';
@@ -36,7 +35,8 @@ class Main extends Component {
   createAppointment = (data) => {
     let newList = this.state.appointments
     newList.push(data)
-    // Need to create my blocked list before setting state so I can block already taken days
+    // Need to create my blocked list before setting state so I can block
+    // days that already have an appointment
     var blockedList = new Promise(
       function(resolve, reject){
         let array = newList.map( a =>  a.date )
@@ -50,6 +50,7 @@ class Main extends Component {
   }
 
   reloadCalendar = () => {
+    // Calendar only needs to be reloaded if it is the active view
     if (!this.state.calendarToggle) return;
     this.child.current.reloadCalendar();
   }
@@ -72,7 +73,6 @@ class Main extends Component {
   }
 
   handlePopUp = () => {
-    console.log('hit pop up')
     this.setState({popup: !this.state.popup})
   }
 
@@ -92,7 +92,6 @@ class Main extends Component {
     
     const appointmentsList = this.state.appointments
     const appointmentIndex = appointmentsList.findIndex((obj => obj.id === newAppointment.id))
-    const appt = appointmentsList[appointmentIndex]
     appointmentsList[appointmentIndex].apptName = newAppointment.apptName
     appointmentsList[appointmentIndex].apptDesc = newAppointment.apptDesc
     appointmentsList[appointmentIndex].date = newAppointment.date
@@ -111,7 +110,7 @@ class Main extends Component {
   }
 
   render() {
-    const {calendarToggle, appointments, datesOnly, date, popup, singleAppointment} = this.state
+    const {calendarToggle, appointments, datesOnly, popup, singleAppointment} = this.state
     return (
         <Grid>
           <Row>

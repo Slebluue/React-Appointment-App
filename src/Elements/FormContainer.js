@@ -1,6 +1,5 @@
 // Dependencies
 // -----------------------------------------------
-import React from 'react';
 import styled from 'styled-components';
 
 // Components
@@ -13,6 +12,13 @@ const FormContainer = styled.form`
     font-weight: 200;
     font-size: 14px;
     color: #FFFFFF;
+  }
+
+  .error {
+    color: red;
+    position: absolute;
+    font-size: 10px;
+    padding-left: 14px;
   }
   
   .form-control{

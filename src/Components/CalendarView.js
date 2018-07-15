@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 //  Components
 // -----------------------------------------------
-import { Grid } from 'react-bootstrap';
 import { DayPickerSingleDateController } from 'react-dates';
 import { PropagateLoader } from 'react-spinners';
 
@@ -61,14 +60,16 @@ class CalendarView extends Component {
           isOutsideRange={this.isDayBlocked}
           isDayHighlighted={this.isDayHighlighted}
           date={date}
-          numberOfMonths={12}
+          numberOfMonths={36}
           onDateChange={(date) => this.onDateChange(date)}
           hideKeyboardShortcutsPanel={true}
           orientation="verticalScrollable"
         />
         ) : (
           <LoaderContainer>
-            <PropagateLoader loading={true} color={'#00a699'} />
+            <PropagateLoader 
+              loading={true} 
+              color={'#00a699'} />
           </LoaderContainer>
         )
         }

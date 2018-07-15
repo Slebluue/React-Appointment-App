@@ -1,12 +1,10 @@
 // Dependencies
 // -----------------------------------------------
 import React, { Component } from 'react';
-import moment from 'moment'
 import isSame from 'react-dates/lib/utils/isSameDay';
 
 //  Components
 // -----------------------------------------------
-import { Grid } from 'react-bootstrap';
 import { SingleDatePicker } from 'react-dates';
 
 class DatePicker extends Component {
@@ -49,6 +47,7 @@ class DatePicker extends Component {
           onDateChange={(date) => this.handleDateChange(date)}
           onFocusChange={({ focused }) => this.setState({ focused })}
           isDayBlocked={this.isDayBlocked}
+          numberOfMonths={1}
           id="some_id"
           showClearDate={true}
           block={true}

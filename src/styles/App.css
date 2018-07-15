@@ -24,6 +24,15 @@
 .DateInput .DateInput_input{
   font-size: 14px;
 }
+.CalendarMonth_table .CalendarDay{
+  cursor: default
+}
+.CalendarMonth_table .CalendarDay.CalendarDay__highlighted_calendar{
+  cursor: pointer
+}
+.CalendarMonthGrid_month__horizontal .CalendarMonth_table .CalendarDay {
+  cursor: pointer
+}
 .CalendarMonth_table .CalendarDay__blocked_calendar, .CalendarMonth_table .CalendarDay__blocked_calendar:active, .CalendarMonth_table .CalendarDay__blocked_calendar:hover{
   background: #ffe8bc;
   border: 1px solid #cacccd;

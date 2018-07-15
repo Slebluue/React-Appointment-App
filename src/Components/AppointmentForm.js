@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { FormGroup, FormControl, Button } from 'react-bootstrap';
 import DatePicker from './DatePicker'
 import FormContainer from '../Elements/FormContainer';
+import Validation from './Validation';
 
 class AppointmentForm extends Component {
   constructor(){
@@ -15,6 +16,7 @@ class AppointmentForm extends Component {
       apptName: '',
       apptDesc: '',
       date: null,
+      formErrors: null,
       id: 1,
     }
     this.child = React.createRef();
@@ -22,11 +24,17 @@ class AppointmentForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.setState({apptName: '', apptDesc: '', date: null})
+
+    const errors = Validation.dateForm(this.state)
+    if ( errors ) {
+      this.setState({formErrors: errors});
+      return;
+    }
+
+    this.setState({apptName: '', apptDesc: '', date: null, formErrors: null})
     this.child.current.resetDate();
     // Doing this reset on form for bug where autofilled background would hang around after submititng form
     document.getElementById("app-form").reset();
-    
     // This is a bandaid solution for being able to set an ID and edit an appointment
     // But I figured for just a react app it is fine. I would be using an actual database for this
     // in a live app
@@ -46,33 +54,39 @@ class AppointmentForm extends Component {
   }
 
   render() {
-    const {isBlocked, dateFromCalendar} = this.props
+    const {isBlocked} = this.props
     return (
       <FormContainer onSubmit={this.onSubmit} id="app-form">
         <FormGroup>
           <DatePicker updateDate={this.handleDateChange} ref={this.child} isBlocked={isBlocked} />
+          { this.state.formErrors && this.state.formErrors.date && 
+            <span className="error">{ this.state.formErrors.date }</span>
+          }
         </FormGroup>
         <FormGroup>
           <FormControl 
             type="text"
             name="apptName"
-            placeholder="Appointment name ..."
+            placeholder="Appointment name..."
             bsSize="large"
             value={this.state.apptName}
             onChange={this.handleFormChange}
           />
+          { this.state.formErrors && this.state.formErrors.name && 
+            <span className="error">{ this.state.formErrors.name }</span>
+          }
         </FormGroup>
         <FormGroup>
           <FormControl 
             type="text"
             name="apptDesc"
-            placeholder="Appointment description ..."
+            placeholder="Appointment description..."
             bsSize="large"
             value={this.state.apptDesc}
             onChange={this.handleFormChange}
           />
         </FormGroup>
-        <Button type="submit">Save Appointment</Button>
+        <Button type="submit">Create</Button>
       </FormContainer>
             
     );
