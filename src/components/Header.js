@@ -4,11 +4,18 @@ import React from 'react';
 
 //  Components
 // -----------------------------------------------
+import {Grid, Row, Col} from 'react-bootstrap'
 
 const Header = () => {
     return (
       <div className="App-header">
-        <h1 className="App-title">Your appointments calendar</h1>
+        <Grid>
+          <Row>
+            <Col sm={12}>
+              <h1 className="App-title">Appointments Calendar App</h1>
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }

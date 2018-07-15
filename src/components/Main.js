@@ -2,6 +2,7 @@
 // -----------------------------------------------
 import React, { Component } from 'react';
 import isSame from 'react-dates/lib/utils/isSameDay';
+import styled from 'styled-components';
 
 //  Components
 // -----------------------------------------------
@@ -13,6 +14,10 @@ import StyledHeader from '../Elements/StyledHeader';
 import Popup from '../Elements/Popup';
 import Tabs from './Tabs';
 import ListView from './ListView';
+
+const StyledCol = styled(Col)`
+  margin-bottom: 32px;
+`
 
 class Main extends Component {
   constructor(){
@@ -81,10 +86,10 @@ class Main extends Component {
     newDateArray.splice(dateIndex, 1)
 
     this.setState({appointments: appointmentsList, datesOnly: newDateArray})
-    this.realodCalendar();
+    this.reloadCalendar();
   }
   updateAppointment = (newAppointment, isSameDate) => {
-    // updating the appointment
+    
     const appointmentsList = this.state.appointments
     const appointmentIndex = appointmentsList.findIndex((obj => obj.id === newAppointment.id))
     const appt = appointmentsList[appointmentIndex]
@@ -92,6 +97,7 @@ class Main extends Component {
     appointmentsList[appointmentIndex].apptDesc = newAppointment.apptDesc
     appointmentsList[appointmentIndex].date = newAppointment.date
 
+    // Checking to see if the date was changed, if it was we need to remove it from the blocked list
     if(!isSameDate){
       const index = this.state.datesOnly.findIndex((date => date.isSame(newAppointment.oldDate)))
       let newDateArray = this.state.datesOnly
@@ -109,13 +115,13 @@ class Main extends Component {
     return (
         <Grid>
           <Row>
-            <Col sm={8}>
+            <StyledCol lg={8} md={6} sm={12}>
               <StyledHeader>Create an Appointment</StyledHeader>
               <AppointmentForm 
                 createAppointment={this.createAppointment} 
                 isBlocked={datesOnly} />
-            </Col>
-            <Col sm={4}>
+            </StyledCol>
+            <StyledCol lg={4} md={6} sm={12}>
               <Tabs calendarToggle={this.calendarToggle}/>
               { calendarToggle ? (
                 <CalendarView 
@@ -129,7 +135,7 @@ class Main extends Component {
                   handlePopUp={this.handlePopUp}
                   getAppointmentInfo={this.getAppointmentInfo} />
               )}
-            </Col>
+            </StyledCol>
           </Row>
           { popup && 
             <Popup 
