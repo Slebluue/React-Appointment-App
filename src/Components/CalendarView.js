@@ -42,7 +42,7 @@ class CalendarView extends Component {
     setTimeout( function() {
       this.setState({loading: false})
     }
-    .bind(this), 400);
+    .bind(this), 300);
   }
 
   onDateChange = (date) => {
